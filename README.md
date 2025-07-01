@@ -6,6 +6,8 @@ The key ideas behind this project are:
 - Implementing a professional game loop in React, a fundamental requirement for any game.
 - Introducing a professional game messaging system to React, essential for a production-ready game.
 
+You can play online at: :video_game: https://battleship-ashy-nu.vercel.app/
+
 ## POINTS TO ACHIEVE
 
 - Fully responsive and mobile-compatible.
