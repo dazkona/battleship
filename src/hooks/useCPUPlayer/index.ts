@@ -5,7 +5,7 @@ import { Player, PlayerActions } from "@/types/game";
 import { useEffect } from "react";
 
 //-------------------------------------------------------------------
-export const useCPUPLayer = () => {
+export const useCPUPlayer = () => {
   const { subscribe, publish } = usePubSub();
 
   useEffect(() => {

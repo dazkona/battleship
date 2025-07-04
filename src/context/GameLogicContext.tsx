@@ -15,7 +15,7 @@ import { SHIPS_PER_PLAYER, BOARD_WIDTH, BOARD_HEIGHT, COLUMNS } from "@/lib/cons
 import { useGameLoop } from "@/hooks/useGameLoop";
 import { usePubSub } from "@/hooks/usePubSub";
 import { EV_ASK_PLAYERS_SETUP_BOARDS, EV_NEW_GAME_STATE, EV_PLAYER_ACTION } from "@/types/pubSubEvents";
-import { useCPUPLayer } from "@/hooks/useCPUPlayer";
+import { useCPUPlayer } from "@/hooks/useCPUPlayer";
 import { GameLogicContextType } from "@/types/gameLogic";
 
 //-------------------------------------------------------------------
@@ -38,7 +38,7 @@ export function GameLogicProvider({ children }: GameLogicProviderProps) {
 
   //-------------------------------------------------------
   // This hook instance acts as the CPU player, making decisions and sending back Player events
-  const cpuPlayer = useCPUPLayer();
+  const cpuPlayer = useCPUPlayer();
 
   //-------------------------------------------------------
   const { publish, subscribe } = usePubSub();
