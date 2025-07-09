@@ -14,11 +14,11 @@ describe("Battleships E2E", () => {
     cy.contains(/start/i).click();
     cy.get('input[placeholder*="Type target coordinates like E7"]', { timeout: 10000 }).type("E7");
     cy.contains(/shoot!/i, { timeout: 10000 }).click();
-    // Check that the square-E7 element has either square-HIT or square-WATER class
+    // Check that the square-E7 element has either square-HIT or square-MISS class
     cy.get(".square-E7", { timeout: 10000 }).should(($el) => {
       expect(
-        $el.hasClass("square-HIT") || $el.hasClass("square-WATER"),
-        "square-E7 should have class square-HIT or square-WATER"
+        $el.hasClass("square-HIT") || $el.hasClass("square-MISS"),
+        "square-E7 should have class square-HIT or square-MISS"
       ).to.be.true;
     });
   });

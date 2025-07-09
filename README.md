@@ -60,4 +60,6 @@ E2E testing using Cypress
 npm run dev
 # Execute cypress tests when server is running
 npx cypress run
+#... or if the dev server is diferent than localhost:3000
+npx cypress run --config baseUrl=http://address:POST
 ```

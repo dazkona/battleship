@@ -26,6 +26,14 @@ jest.mock("@/hooks/useGameLogic", () => ({
   useGameLogic: () => getMockGameLogicContextType(),
 }));
 
+jest.mock("@/hooks/usePubSub", () => ({
+  usePubSub: () => ({
+    subscribe: jest.fn(() => jest.fn()), // returns an unsubscribe function
+    publish: jest.fn(),
+    unsubscribe: jest.fn(),
+  }),
+}));
+
 describe("Fleet component", () => {
   it("renders the OPONENT'S FLEET title", () => {
     render(<Fleet isMyBoard={false} />);
