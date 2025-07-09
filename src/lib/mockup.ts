@@ -1,4 +1,4 @@
-import { Board, Player, PlayerActions, SquareStatus } from "@/types/game";
+import { Board, Player, SquareStatus } from "@/types/game";
 import { BOARD_HEIGHT, BOARD_WIDTH } from "./constants";
 
 //-------------------------------------------------------

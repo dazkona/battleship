@@ -1,4 +1,4 @@
-import { GameState, PlayerAction, PlayerActions } from "./game";
+import { GameState, PlayerAction } from "./game";
 
 export const EV_PLAYER_ACTION = "PLAYER_ACTION";
 export const EV_ASK_PLAYERS_SETUP_BOARDS = "ASK_PLAYERS_SETUP_BOARDS";

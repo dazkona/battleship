@@ -26,23 +26,28 @@ export const Board = ({ isMyBoard }: BoardProps) => {
   // Initial advice
   //--------------------------------------------------------
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setShowYourTurn(false);
     }, 3000);
+
+    return () => clearTimeout(timeoutId); // cleanup
   }, []);
 
   //--------------------------------------------------------
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
     const unsubscribe = subscribe(EV_NEW_GAME_STATE, ({ newState }: { newState: GameState }) => {
       if (newState === GameState.WAITING_FOR_FIRE && attackingPlayer === Player.USER) {
         setShowYourTurn(true);
-        setTimeout(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
           setShowYourTurn(false);
         }, 3000);
       }
     });
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       unsubscribe(); // Cleanup on unmount
     };
   }, [subscribe]);
@@ -85,10 +90,10 @@ export const Board = ({ isMyBoard }: BoardProps) => {
   //--------------------------------------------------------
   return (
     <div
-      className="board relative 
+      className={`board relative 
 			flex flex-row flex-wrap 
-			w-full md:w-[33vw] md:max-w-md md:min-w-[448px]
-			md:mr-auto md:ml-auto">
+			w-full md:w-[33vw] md:max-w-md md:min-w-[${BOARD_WIDTH + 2}vw]
+			md:mr-auto md:ml-auto`}>
       <div className="squares-container w-full h-full flex flex-row flex-wrap">{renderSquares()}</div>
       {showYourTurn && (
         <div

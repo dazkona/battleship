@@ -1,4 +1,5 @@
 import { useGameLogic } from "@/hooks/useGameLogic";
+import { BOARD_WIDTH } from "@/lib/constants";
 import { GameState, Player, PlayerActions, SquareStatus } from "@/types/game";
 import { Ship, Waves, X, Crosshair, Ban } from "lucide-react";
 
@@ -48,9 +49,9 @@ export const Square = ({ x, y, cell, isMyBoard, coordinate }: SquareProps) => {
     <div
       className={`square square-${coordinate} square-${cell}
 		flex flex-col justify-center content-center items-center 
-		md:min-w-[36px]! md:min-h-[36px]!
+		md:min-w-[1vw]! md:min-h-[1vw]!
 		border-1 border-blue-400 ${bgColour} ${borderHover}`}
-      style={{ width: "calc(100%/12)", aspectRatio: "1/1", minWidth: 0, minHeight: 0 }}
+      style={{ width: `calc(100%/${BOARD_WIDTH + 2})`, aspectRatio: "1/1", minWidth: 0, minHeight: 0 }}
       onClick={handleClick}>
       {content}
     </div>

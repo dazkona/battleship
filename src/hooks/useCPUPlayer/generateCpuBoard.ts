@@ -1,7 +1,6 @@
 import { Board, Direction, Player, Ship, ShipStatus, SquareStatus } from "@/types/game";
 import { BOARD_HEIGHT, BOARD_WIDTH, COLUMNS, SHIPS_PER_PLAYER } from "@/lib/constants";
 import { getRandomInt } from "@/lib/helpers";
-import { X } from "lucide-react";
 
 //--------------------------------------------------------
 const getSquareFromArray = (x: number, y: number, squares: SquareStatus[]) => {

@@ -1,5 +1,5 @@
 "use client";
-import { Board as BoardType, Player, SquareStatus, Ship as ShipType, ShipStatus } from "@/types/game";
+import { Player, Ship as ShipType, ShipStatus } from "@/types/game";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Ship } from "lucide-react";
 

@@ -1,5 +1,5 @@
 "use client";
-import { createContext, ReactNode, useContext, useMemo, useState, useRef } from "react";
+import { createContext, ReactNode, useMemo, useState, useRef } from "react";
 
 //-------------------------------------------------------------------
 interface GameLoopContextType {

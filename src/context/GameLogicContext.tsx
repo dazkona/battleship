@@ -1,5 +1,5 @@
 "use client";
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import {
   Board,
   GameResult,
@@ -192,10 +192,20 @@ export function GameLogicProvider({ children }: GameLogicProviderProps) {
   // Expects format like 'A1', 'B10', etc.
   //-------------------------------------------------------
   const getSquareIdxFromCoordinates = (coord: string) => {
-    const match = coord
-      .trim()
-      .toUpperCase()
-      .match(/^([A-J])(10|[1-9])$/);
+    // Dynamically build regex for columns and row numbers based on BOARD_WIDTH and BOARD_HEIGHT
+    // Build column pattern: A, B, ..., up to the maxCol-th letter
+    const colPattern = `[A-${String.fromCharCode(65 + BOARD_WIDTH - 1)}]`;
+    // Build row pattern
+    let rowPattern = "[1-9]";
+    if (BOARD_HEIGHT > 9) {
+      const twoDigitRanges = [];
+      for (let i = 10; i <= BOARD_HEIGHT; i++) {
+        twoDigitRanges.push(i);
+      }
+      rowPattern = `(?:${twoDigitRanges.join("|")}|[1-9])`;
+    }
+    const regex = new RegExp(`^(${colPattern})(${rowPattern})$`);
+    const match = coord.trim().toUpperCase().match(regex);
     if (!match) return null;
 
     const col = match[1];

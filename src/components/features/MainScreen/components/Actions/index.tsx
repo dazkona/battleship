@@ -1,9 +1,10 @@
 "use client";
-import { Board as BoardType, Player, Ship as ShipType, GameState, PlayerActions } from "@/types/game";
+import { Player, GameState, PlayerActions } from "@/types/game";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "@/lib/constants";
 
 export const Actions = () => {
   const { state: gameState, onPlayerAction } = useGameLogic();
@@ -11,8 +12,18 @@ export const Actions = () => {
 
   //--------------------------------------------------------
   const checkValidCoordinates = (coord: string) => {
-    // Match a single letter (A-J or a-j) followed by 1 or 2 digits (1-10)
-    return /^[A-Ja-j](10|[1-9])$/.test(coord.trim());
+    // Dynamically build regex for columns and row numbers based on BOARD_WIDTH and BOARD_HEIGHT
+    const colPattern = `[A-${String.fromCharCode(65 + BOARD_WIDTH - 1)}a-${String.fromCharCode(97 + BOARD_WIDTH - 1)}]`;
+    let rowPattern = "[1-9]";
+    if (BOARD_HEIGHT > 9) {
+      const twoDigitRanges = [];
+      for (let i = 10; i <= BOARD_HEIGHT; i++) {
+        twoDigitRanges.push(i);
+      }
+      rowPattern = `(?:${twoDigitRanges.join("|")}|[1-9])`;
+    }
+    const regex = new RegExp(`^${colPattern}(${rowPattern})$`);
+    return regex.test(coord.trim());
   };
 
   //--------------------------------------------------------
