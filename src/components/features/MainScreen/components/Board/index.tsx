@@ -92,7 +92,7 @@ export const Board = ({ isMyBoard }: BoardProps) => {
     <div
       className={`board relative 
 			flex flex-row flex-wrap 
-			w-full md:w-[33vw] md:max-w-md md:min-w-[${BOARD_WIDTH + 2}vw]
+			w-full md:w-[${BOARD_WIDTH + 2}vw] md:max-w-[${BOARD_WIDTH + 2}vw] md:min-w-[${BOARD_WIDTH + 2}vw]
 			md:mr-auto md:ml-auto`}>
       <div className="squares-container w-full h-full flex flex-row flex-wrap">{renderSquares()}</div>
       {showYourTurn && (
