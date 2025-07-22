@@ -15,7 +15,11 @@ export const Square = ({ x, y, cell, isMyBoard, coordinate }: SquareProps) => {
   const { state: gameState, onPlayerAction } = useGameLogic();
 
   const handleClick = () => {
-    if (gameState === GameState.WAITING_FOR_FIRE && !isMyBoard) {
+    if (
+      gameState === GameState.WAITING_FOR_FIRE &&
+      !isMyBoard &&
+      (cell === SquareStatus.WATER || cell === SquareStatus.SHIP)
+    ) {
       onPlayerAction({ player: Player.USER, action: PlayerActions.SET_TARGET, payload: coordinate });
     }
   };
