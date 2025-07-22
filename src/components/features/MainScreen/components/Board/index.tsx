@@ -2,17 +2,11 @@
 import { BorderSquare } from "./BorderSquare";
 import { Square } from "./Square";
 import { Board as BoardType, GameState, Player, SquareStatus } from "@/types/game";
-import { BOARD_WIDTH, BOARD_HEIGHT, COLUMNS } from "@/lib/constants";
+import { BOARD_WIDTH, BOARD_HEIGHT, COLUMNS, TIMEOUT_YOURTURN_ALERT } from "@/lib/constants";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { usePubSub } from "@/hooks/usePubSub";
 import { EV_NEW_GAME_STATE } from "@/types/pubSubEvents";
 import { useEffect, useState } from "react";
-
-interface Square {
-  x: number;
-  y: number;
-  state: SquareStatus;
-}
 
 interface BoardProps {
   isMyBoard: boolean;
@@ -20,7 +14,7 @@ interface BoardProps {
 
 export const Board = ({ isMyBoard }: BoardProps) => {
   const { boards, state: gameState, attackingPlayer } = useGameLogic();
-  const [showYourTurn, setShowYourTurn] = useState<Boolean>(true);
+  const [showYourTurn, setShowYourTurn] = useState<boolean>(true);
   const { subscribe } = usePubSub();
 
   // Initial advice
@@ -28,11 +22,12 @@ export const Board = ({ isMyBoard }: BoardProps) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowYourTurn(false);
-    }, 3000);
+    }, TIMEOUT_YOURTURN_ALERT);
 
     return () => clearTimeout(timeoutId); // cleanup
   }, []);
 
+  // Subscribe to EV_NEW_GAME_STATE event
   //--------------------------------------------------------
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -42,7 +37,7 @@ export const Board = ({ isMyBoard }: BoardProps) => {
         if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
           setShowYourTurn(false);
-        }, 3000);
+        }, TIMEOUT_YOURTURN_ALERT);
       }
     });
 
@@ -50,11 +45,14 @@ export const Board = ({ isMyBoard }: BoardProps) => {
       if (timeoutId) clearTimeout(timeoutId);
       unsubscribe(); // Cleanup on unmount
     };
-  }, [subscribe]);
+  }, []);
 
   //--------------------------------------------------------
-  const getSquareFromArray = (x: number, y: number, board: BoardType | undefined) => {
-    if (board) return board.squares[BOARD_WIDTH * y + x];
+  const getSquareFromArray = (x: number, y: number, board: BoardType | undefined): SquareStatus | null => {
+    if (board) {
+      const squareIdx = BOARD_WIDTH * y + x;
+      if (squareIdx >= 0 && squareIdx < board.squares.length) return board.squares[squareIdx];
+    }
     return null;
   };
 
@@ -98,7 +96,7 @@ export const Board = ({ isMyBoard }: BoardProps) => {
       {showYourTurn && (
         <div
           className={`your-turn-signal
-				absolute w-full h-full flex justify-center text-center items-center w-full 
+				absolute h-full flex justify-center text-center items-center w-full 
 				text-4xl text-blue-800
 				animate__animated animate__bounceInDown`}
           style={{
