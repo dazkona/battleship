@@ -10,11 +10,13 @@ export function useBoardLogic(isMyBoard: boolean) {
   const [showYourTurn, setShowYourTurn] = useState<boolean>(true);
   const { subscribe } = usePubSub();
 
+  //-------------------------------------------------------
   useEffect(() => {
     const timeoutId = setTimeout(() => setShowYourTurn(false), TIMEOUT_YOURTURN_ALERT);
     return () => clearTimeout(timeoutId);
   }, []);
 
+  //-------------------------------------------------------
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
     let unsubscribe = () => {};
@@ -42,6 +44,7 @@ export function useBoardLogic(isMyBoard: boolean) {
     };
   }, [subscribe, attackingPlayer]);
 
+  //-------------------------------------------------------
   const getSquareFromArray = useCallback((x: number, y: number, board: BoardType | undefined): SquareStatus | null => {
     if (board) {
       const squareIdx = BOARD_WIDTH * y + x;
@@ -50,6 +53,7 @@ export function useBoardLogic(isMyBoard: boolean) {
     return null;
   }, []);
 
+  //-------------------------------------------------------
   const getSquareCell = useCallback(
     (x: number, y: number): SquareStatus | null => {
       const board = boards[isMyBoard ? Player.USER : Player.CPU];
@@ -58,5 +62,6 @@ export function useBoardLogic(isMyBoard: boolean) {
     [boards, isMyBoard, getSquareFromArray]
   );
 
+  //-------------------------------------------------------
   return { showYourTurn, getSquareCell, boards };
 }
