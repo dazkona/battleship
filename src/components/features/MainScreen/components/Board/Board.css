@@ -1,0 +1,15 @@
+/* Board.css */
+.your-turn-signal {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2.25rem; /* text-4xl */
+  color: #1e40af; /* text-blue-800 */
+  font-family: var(--font-special-elite);
+  text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff, 0px 2px 0 #fff, 2px 0px 0 #fff,
+    0px -2px 0 #fff, -2px 0px 0 #fff;
+}
