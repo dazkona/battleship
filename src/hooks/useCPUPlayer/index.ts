@@ -11,15 +11,25 @@ export const useCPUPlayer = () => {
 
   useEffect(() => {
     const unsubscribe = subscribe(EV_ASK_PLAYERS_SETUP_BOARDS, () => {
-      const board = generateCpuBoard();
-      timeoutRef.current = setTimeout(() => {
-        publish(EV_PLAYER_ACTION, { player: Player.CPU, action: PlayerActions.SET_BOARD, payload: board });
-      }, 4000); // There is some delay to mimic real behaviour.
+      try {
+        const board = generateCpuBoard();
+        timeoutRef.current = setTimeout(() => {
+          try {
+            publish(EV_PLAYER_ACTION, { player: Player.CPU, action: PlayerActions.SET_BOARD, payload: board });
+          } catch (err) {
+            // Optionally publish an error event or log
+            console.error("Failed to publish CPU board setup:", err);
+          }
+        }, 4000);
+      } catch (err) {
+        // Optionally publish an error event or log
+        console.error("Failed to generate CPU board:", err);
+      }
     });
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      unsubscribe(); // Cleanup on unmount
+      unsubscribe();
     };
   }, [subscribe]);
 };

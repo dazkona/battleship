@@ -1,5 +1,5 @@
 "use client";
-import { ErrorBoundary } from "./ErrorBoundary";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Actions } from "../Actions";
 import { Board } from "../Board";
 import { Ships } from "../Ships";

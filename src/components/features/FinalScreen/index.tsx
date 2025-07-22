@@ -1,4 +1,5 @@
 "use client";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { formatTimeFromMsToPretty } from "@/lib/helpers";
@@ -22,27 +23,29 @@ export const FinalScreen = () => {
   };
 
   return (
-    <div className="final-screen flex flex-col items-center justify-center bg-white md:w-[33vw] py-2 md:py-15">
-      <div className="text-3xl font-black mb-5">
-        <h1>Nice game!</h1>
+    <ErrorBoundary fallback={<div>Something went wrong. Please refresh the page.</div>}>
+      <div className="final-screen flex flex-col items-center justify-center bg-white md:w-[33vw] py-2 md:py-15">
+        <div className="text-3xl font-black mb-5">
+          <h1>Nice game!</h1>
+        </div>
+        <div className="text-2xl font-gray-800 mb-5">
+          <h2>
+            <span className="mr-2 text-gray-500">Winner:</span>
+            {gameResult?.winner}
+          </h2>
+          <h2>
+            <span className="mr-2 text-gray-500">Time:</span>
+            {gameResult?.usedTime !== undefined ? formatTimeFromMsToPretty(gameResult.usedTime) : ""}
+          </h2>
+          <h2>
+            <span className="mr-2 text-gray-500">Shots:</span>
+            {gameResult?.usedShots}
+          </h2>
+        </div>
+        <div>
+          <Button onClick={handleClick}>Restart a new game!</Button>
+        </div>
       </div>
-      <div className="text-2xl font-gray-800 mb-5">
-        <h2>
-          <span className="mr-2 text-gray-500">Winner:</span>
-          {gameResult?.winner}
-        </h2>
-        <h2>
-          <span className="mr-2 text-gray-500">Time:</span>
-          {gameResult?.usedTime !== undefined ? formatTimeFromMsToPretty(gameResult.usedTime) : ""}
-        </h2>
-        <h2>
-          <span className="mr-2 text-gray-500">Shots:</span>
-          {gameResult?.usedShots}
-        </h2>
-      </div>
-      <div>
-        <Button onClick={handleClick}>Restart a new game!</Button>
-      </div>
-    </div>
+    </ErrorBoundary>
   );
 };

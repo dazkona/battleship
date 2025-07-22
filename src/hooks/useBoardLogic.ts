@@ -17,33 +17,45 @@ export function useBoardLogic(isMyBoard: boolean) {
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
-    const unsubscribe = subscribe(EV_NEW_GAME_STATE, ({ newState }: { newState: GameState }) => {
-      if (newState === GameState.WAITING_FOR_FIRE && attackingPlayer === Player.USER) {
-        setShowYourTurn(true);
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => setShowYourTurn(false), TIMEOUT_YOURTURN_ALERT);
-      }
-    });
+    let unsubscribe = () => {};
+    try {
+      unsubscribe = subscribe(EV_NEW_GAME_STATE, ({ newState }: { newState: GameState }) => {
+        if (newState === GameState.WAITING_FOR_FIRE && attackingPlayer === Player.USER) {
+          setShowYourTurn((prev) => {
+            if (!prev) return true;
+            return prev;
+          });
+          if (timeoutId) clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => setShowYourTurn(false), TIMEOUT_YOURTURN_ALERT);
+        }
+      });
+    } catch (err) {
+      console.error("Failed to subscribe to EV_NEW_GAME_STATE:", err);
+    }
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
-      unsubscribe();
+      try {
+        unsubscribe();
+      } catch (err) {
+        console.error("Failed to unsubscribe from EV_NEW_GAME_STATE:", err);
+      }
     };
   }, [subscribe, attackingPlayer]);
 
-  const getSquareFromArray = (x: number, y: number, board: BoardType | undefined): SquareStatus | null => {
+  const getSquareFromArray = useCallback((x: number, y: number, board: BoardType | undefined): SquareStatus | null => {
     if (board) {
       const squareIdx = BOARD_WIDTH * y + x;
       if (squareIdx >= 0 && squareIdx < board.squares.length) return board.squares[squareIdx];
     }
     return null;
-  };
+  }, []);
 
   const getSquareCell = useCallback(
     (x: number, y: number): SquareStatus | null => {
       const board = boards[isMyBoard ? Player.USER : Player.CPU];
       return getSquareFromArray(x - 1, y - 1, board);
     },
-    [boards, isMyBoard]
+    [boards, isMyBoard, getSquareFromArray]
   );
 
   return { showYourTurn, getSquareCell, boards };
