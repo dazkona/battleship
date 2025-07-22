@@ -1,4 +1,5 @@
 "use client";
+import { ErrorBoundary } from "./ErrorBoundary";
 import { Actions } from "../Actions";
 import { Board } from "../Board";
 import { Ships } from "../Ships";
@@ -19,7 +20,9 @@ export const Fleet = ({ isMyBoard }: ShipsProps) => {
 			text-2xl md:text-base">
         {isMyBoard ? "MY FLEET" : "OPONENT'S FLEET"}
       </div>
-      <Board isMyBoard={isMyBoard} />
+      <ErrorBoundary fallback={<div>Failed to load the board. Please refresh.</div>}>
+        <Board isMyBoard={isMyBoard} />
+      </ErrorBoundary>
       <Ships isMyBoard={isMyBoard} />
       <Actions />
     </div>
